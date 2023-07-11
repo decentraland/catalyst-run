@@ -48,7 +48,6 @@ void Lifecycle.run<AppComponents>({
         POSTGRES_PORT: '5432'
       }
     )
-    console.log(config)
     const metrics = createTestMetricsComponent({})
     const logs = await createLogComponent({})
 
@@ -75,17 +74,11 @@ void Lifecycle.run<AppComponents>({
 })
 
 async function doMigration(components: AppComponents) {
-  if (!process.env.MIGRATION_PRIVATE_KEY) {
-    throw 'Cannot run migration without a deployer PK'
-  }
   if (!process.env.TARGET_CATALYST_URL) {
     throw 'Need to specify a target Catalyst URL'
   }
 
   const privateKey = process.env.MIGRATION_PRIVATE_KEY
-  const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey)
-  const address = EthCrypto.publicKey.toAddress(publicKey)
-  console.log({ address, privateKey, publicKey })
 
   const result = await components.database.query(
     SQL`
@@ -98,7 +91,12 @@ async function doMigration(components: AppComponents) {
     `
   )
 
-  console.log(`About to attempt migration of ${result.rowCount} scenes`)
+  if (privateKey) {
+    console.log(`About to attempt migration of ${result.rowCount} scenes`)
+  } else {
+    console.log(`No private key provided, ${result.rowCount} scenes would be deployed`)
+    return
+  }
 
   let counter = 0
   for (const deployment of result.rows) {
@@ -135,6 +133,10 @@ async function doMigration(components: AppComponents) {
 
     const messageHash = Authenticator.createEthereumMessageHash(entity.entityId)
     const signature = EthCrypto.sign(privateKey, Buffer.from(messageHash).toString('hex'))
+
+    const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey)
+    const address = EthCrypto.publicKey.toAddress(publicKey)
+    console.log({ address, privateKey, publicKey })
     const authChain = Authenticator.createSimpleAuthChain(entity.entityId, address, signature)
 
     const fetcher = createFetchComponent({
