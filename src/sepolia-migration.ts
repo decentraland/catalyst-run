@@ -103,7 +103,7 @@ async function doMigration(components: AppComponents) {
       }
     }
 
-    console.log(Array.from(pointers))
+    console.log(JSON.stringify(Array.from(pointers)))
     return
   }
 
