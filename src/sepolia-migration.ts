@@ -8,7 +8,7 @@ import { createFetchComponent } from '@well-known-components/fetch-component'
 import { createCatalystClient } from 'dcl-catalyst-client'
 import * as DeploymentBuilder from 'dcl-catalyst-client/dist/client/utils/DeploymentBuilder'
 import { IPgComponent, createPgComponent } from '@well-known-components/pg-component'
-import { createDotEnvConfigComponent } from '@well-known-components/env-config-provider'
+import { createConfigComponent, createDotEnvConfigComponent } from '@well-known-components/env-config-provider'
 import { createTestMetricsComponent } from '@well-known-components/metrics'
 import { createLogComponent } from '@well-known-components/logger'
 import {
@@ -55,7 +55,17 @@ void Lifecycle.run<AppComponents>({
     const fs = createFsComponent()
     const storage = await createFolderBasedFileSystemContentStorage({ logs, fs }, 'storage/contents')
 
-    const database = await createPgComponent({ config, logs, metrics })
+    const database = await createPgComponent({
+      config: createConfigComponent({
+        PG_COMPONENT_PSQL_HOST: await config.requireString('POSTGRES_HOST'),
+        PG_COMPONENT_PSQL_PORT: await config.requireString('POSTGRES_PORT'),
+        PG_COMPONENT_PSQL_DATABASE: await config.requireString('POSTGRES_CONTENT_DB'),
+        PG_COMPONENT_PSQL_USER: await config.requireString('POSTGRES_CONTENT_USER'),
+        PG_COMPONENT_PSQL_PASSWORD: await config.requireString('POSTGRES_CONTENT_PASSWORD')
+      }),
+      logs,
+      metrics
+    })
 
     return {
       database,
