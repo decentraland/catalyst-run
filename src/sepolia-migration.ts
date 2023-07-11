@@ -41,7 +41,9 @@ void Lifecycle.run<AppComponents>({
     await stop()
   },
   async initComponents(): Promise<AppComponents> {
-    const config = await createDotEnvConfigComponent({})
+    const config = await createDotEnvConfigComponent({
+      path: ['.env', '.env-advaced', '.env-database-content']
+    })
     console.log(config)
     const metrics = createTestMetricsComponent({})
     const logs = await createLogComponent({})
