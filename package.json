@@ -3,7 +3,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint:check": "eslint '**/*.{js,ts}'",
-    "lint:fix": "eslint '**/*.{js,ts}' --fix",
+    "lint:fix": "eslint '**/*.{js,ts}' --fix"
   },
   "version": "1.0.0",
   "main": "index.js",
