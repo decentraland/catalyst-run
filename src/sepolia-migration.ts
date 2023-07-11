@@ -41,9 +41,13 @@ void Lifecycle.run<AppComponents>({
     await stop()
   },
   async initComponents(): Promise<AppComponents> {
-    const config = await createDotEnvConfigComponent({
-      path: ['.env', '.env-advaced', '.env-database-content']
-    })
+    const config = await createDotEnvConfigComponent(
+      {},
+      {
+        POSTGRES_HOST: 'postgres',
+        POSTGRES_PORT: '5432'
+      }
+    )
     console.log(config)
     const metrics = createTestMetricsComponent({})
     const logs = await createLogComponent({})
