@@ -80,7 +80,7 @@ async function doMigration(components: AppComponents) {
 
   const privateKey = process.env.MIGRATION_PRIVATE_KEY
 
-  const result = await components.database.query(
+  const result = await components.database.query<any>(
     SQL`
         SELECT id, entity_type, entity_id, entity_timestamp, entity_pointers, entity_metadata
         FROM deployments
@@ -95,18 +95,19 @@ async function doMigration(components: AppComponents) {
     console.log(`About to attempt migration of ${result.rowCount} scenes`)
   } else {
     console.log(`No private key provided, ${result.rowCount} scenes would be deployed`)
+    for (const deployment of result.rows) {
+      console.log(deployment.entity_pointers)
+    }
     return
   }
 
   let counter = 0
   for (const deployment of result.rows) {
-    const deployment2 = deployment as any
-
     const fileResult = await components.database.query(
       SQL`
         SELECT *
         FROM content_files
-        WHERE deployment = ${deployment2.id}
+        WHERE deployment = ${deployment.id}
     `
     )
 
@@ -121,10 +122,10 @@ async function doMigration(components: AppComponents) {
       }
     }
 
-    const metadata = deployment2.entity_metadata.v
+    const metadata = deployment.entity_metadata.v
     const entity = await DeploymentBuilder.buildEntity({
-      type: deployment2.entity_type,
-      pointers: deployment2.entity_pointers,
+      type: deployment.entity_type,
+      pointers: deployment.entity_pointers,
       files,
       metadata,
       timestamp: new Date().getTime()
@@ -159,7 +160,7 @@ async function doMigration(components: AppComponents) {
       })
     } catch (e) {
       console.log(e)
-      console.log(`Error deploying entity ${entity.entityId} on ${deployment2.entity_pointers}`)
+      console.log(`Error deploying entity ${entity.entityId} on ${deployment.entity_pointers}`)
     }
     counter++
   }
