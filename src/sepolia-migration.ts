@@ -95,9 +95,15 @@ async function doMigration(components: AppComponents) {
     console.log(`About to attempt migration of ${result.rowCount} scenes`)
   } else {
     console.log(`No private key provided, ${result.rowCount} scenes would be deployed`)
+
+    const pointers = new Set<string>()
     for (const deployment of result.rows) {
-      console.log(deployment.entity_pointers)
+      for (const pointer of deployment.entity_pointers) {
+        pointers.add(pointer)
+      }
     }
+
+    console.log(pointers)
     return
   }
 
