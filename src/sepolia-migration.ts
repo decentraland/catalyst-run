@@ -133,6 +133,16 @@ async function doMigration(components: AppComponents) {
     }
 
     const metadata = deployment.entity_metadata.v
+
+    // remove navmapThumbnail if file is not present
+    const sceneThumbnail = metadata?.display.navmapThumbnail
+    if (sceneThumbnail) {
+      if (!files.has(sceneThumbnail)) {
+        metadata.display.navmapThumbnail = undefined
+      }
+    }
+    //
+
     const entity = await DeploymentBuilder.buildEntity({
       type: deployment.entity_type,
       pointers: deployment.entity_pointers,
@@ -140,6 +150,7 @@ async function doMigration(components: AppComponents) {
       metadata,
       timestamp: new Date().getTime()
     })
+
     console.log(`Deploying entity #${counter}: entity_id ${entity.entityId}`, JSON.stringify(metadata))
 
     const messageHash = Authenticator.createEthereumMessageHash(entity.entityId)
