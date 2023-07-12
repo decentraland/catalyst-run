@@ -107,6 +107,10 @@ async function doMigration(components: AppComponents) {
     return
   }
 
+  const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey)
+  const address = EthCrypto.publicKey.toAddress(publicKey)
+  console.log({ address, privateKey, publicKey })
+
   let counter = 0
   for (const deployment of result.rows) {
     const fileResult = await components.database.query(
@@ -141,9 +145,6 @@ async function doMigration(components: AppComponents) {
     const messageHash = Authenticator.createEthereumMessageHash(entity.entityId)
     const signature = EthCrypto.sign(privateKey, Buffer.from(messageHash).toString('hex'))
 
-    const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey)
-    const address = EthCrypto.publicKey.toAddress(publicKey)
-    console.log({ address, privateKey, publicKey })
     const authChain = Authenticator.createSimpleAuthChain(entity.entityId, address, signature)
 
     const fetcher = createFetchComponent({
