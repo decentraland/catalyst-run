@@ -1,5 +1,4 @@
 import { Lifecycle } from '@well-known-components/interfaces'
-// import { migrateContentFolderStructure } from '../migrations/ContentFolderMigrationManager'
 import SQL from 'sql-template-strings'
 import { streamToBuffer } from '@dcl/catalyst-storage/dist/content-item'
 import { Authenticator } from '@dcl/crypto'
@@ -29,10 +28,6 @@ const SEPOLIA_MIGRATION_TIMESTAMP: number = process.env.SEPOLIA_MIGRATION_TIMEST
 void Lifecycle.run<AppComponents>({
   async main(program: Lifecycle.EntryPointParameters<AppComponents>): Promise<void> {
     const { components, startComponents, stop } = program
-
-    // TODO: do I need this?
-    // await components.migrationManager.run()
-    // await migrateContentFolderStructure(components)
 
     await startComponents()
 
