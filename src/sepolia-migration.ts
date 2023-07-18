@@ -25,6 +25,8 @@ const SEPOLIA_MIGRATION_TIMESTAMP: number = process.env.SEPOLIA_MIGRATION_TIMEST
   ? parseInt(process.env.SEPOLIA_MIGRATION_TIMESTAMP)
   : 1689096101514
 
+const CONTENTS_DIRECTORY = process.env.CONTENTS_DIRECTORY ?? '/opt/ebs/contents'
+
 void Lifecycle.run<AppComponents>({
   async main(program: Lifecycle.EntryPointParameters<AppComponents>): Promise<void> {
     const { components, startComponents, stop } = program
@@ -47,7 +49,7 @@ void Lifecycle.run<AppComponents>({
     const logs = await createLogComponent({})
 
     const fs = createFsComponent()
-    const storage = await createFolderBasedFileSystemContentStorage({ logs, fs }, '/opt/ebs/catalyst-owner/contents')
+    const storage = await createFolderBasedFileSystemContentStorage({ logs, fs }, CONTENTS_DIRECTORY)
 
     const database = await createPgComponent({
       config: createConfigComponent({
