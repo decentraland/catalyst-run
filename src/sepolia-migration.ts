@@ -47,10 +47,7 @@ void Lifecycle.run<AppComponents>({
     const logs = await createLogComponent({})
 
     const fs = createFsComponent()
-    const storage = await createFolderBasedFileSystemContentStorage(
-      { logs, fs },
-      '/opt/ebs/catalyst-owner/storage/contents'
-    )
+    const storage = await createFolderBasedFileSystemContentStorage({ logs, fs }, '/opt/ebs/catalyst-owner/contents')
 
     const database = await createPgComponent({
       config: createConfigComponent({
