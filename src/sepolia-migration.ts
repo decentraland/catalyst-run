@@ -47,7 +47,10 @@ void Lifecycle.run<AppComponents>({
     const logs = await createLogComponent({})
 
     const fs = createFsComponent()
-    const storage = await createFolderBasedFileSystemContentStorage({ logs, fs }, 'storage/contents')
+    const storage = await createFolderBasedFileSystemContentStorage(
+      { logs, fs },
+      '/opt/ebs/catalyst-owner/storage/contents'
+    )
 
     const database = await createPgComponent({
       config: createConfigComponent({
@@ -116,7 +119,7 @@ async function doMigration(components: AppComponents) {
     `
     )
 
-    const files: Map<string, Uint8Array> = new Map()
+    const files = new Map<string, Uint8Array>()
 
     for (const file of fileResult.rows) {
       const key = (file as any).key
@@ -124,6 +127,8 @@ async function doMigration(components: AppComponents) {
       const content = await components.storage.retrieve(hash)
       if (content) {
         files.set(key, await streamToBuffer(await content.asStream()))
+      } else {
+        console.log(`no content found for hash: ${hash}`)
       }
     }
 
