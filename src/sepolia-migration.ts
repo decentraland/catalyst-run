@@ -25,7 +25,7 @@ const SEPOLIA_MIGRATION_TIMESTAMP: number = process.env.SEPOLIA_MIGRATION_TIMEST
   ? parseInt(process.env.SEPOLIA_MIGRATION_TIMESTAMP)
   : 1689096101514
 
-const CONTENTS_DIRECTORY = process.env.CONTENTS_DIRECTORY ?? '/opt/ebs/contents'
+const CONTENTS_DIRECTORY = process.env.CONTENTS_DIRECTORY ?? '/app/contents'
 
 void Lifecycle.run<AppComponents>({
   async main(program: Lifecycle.EntryPointParameters<AppComponents>): Promise<void> {
@@ -126,6 +126,7 @@ async function doMigration(components: AppComponents) {
       const content = await components.storage.retrieve(hash)
       if (content) {
         files.set(key, await streamToBuffer(await content.asStream()))
+        console.log(`content found for hash: ${hash}`)
       } else {
         console.log(`no content found for hash: ${hash}`)
       }
