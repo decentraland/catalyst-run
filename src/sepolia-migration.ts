@@ -126,7 +126,6 @@ async function doMigration(components: AppComponents) {
       const content = await components.storage.retrieve(hash)
       if (content) {
         files.set(key, await streamToBuffer(await content.asStream()))
-        console.log(`content found for hash: ${hash}`)
       } else {
         console.log(`no content found for hash: ${hash}`)
       }
