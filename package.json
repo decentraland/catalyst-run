@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@dcl/catalyst-storage": "^3.0.1",
-    "@dcl/crypto": "^3.4.2",
+    "@dcl/crypto": "^3.4.4",
     "@well-known-components/env-config-provider": "^1.2.0",
     "@well-known-components/fetch-component": "^2.0.2",
     "@well-known-components/http-server": "^2.0.0",
