@@ -656,9 +656,9 @@
     regenerator-runtime "^0.13.11"
 
 "@dcl/catalyst-contracts@^4.0.2":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@dcl/catalyst-contracts/-/catalyst-contracts-4.0.6.tgz#bb6cbcd6f51fc16ee9723f8d91d1416b19dcd9dd"
-  integrity sha512-Ti3YWU+cla43ai24cYgDYO4BvKamYKOBgFdasaRHm+zl3xuObSBRrDxJlOzDFmgIIZVjhutaICFyMUPyWWgcrw==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@dcl/catalyst-contracts/-/catalyst-contracts-4.2.0.tgz#fb7bc3b2fb49abc9890a86561694e5e66893957a"
+  integrity sha512-4xRIlrXTrUIZEf/TmZY4xiF7ZC1ixJJvCwEct1Xtyt3hrqVpfetuuzgBfKOvsy4kUu2syJ3hI8QL/vPO5CigcA==
 
 "@dcl/catalyst-storage@^3.0.1":
   version "3.0.1"
