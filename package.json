@@ -22,7 +22,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@dcl/catalyst-storage": "^3.0.1",
+    "@dcl/catalyst-storage": "^4.1.0",
     "@dcl/crypto": "^3.4.2",
     "@well-known-components/env-config-provider": "^1.2.0",
     "@well-known-components/fetch-component": "^2.0.2",
