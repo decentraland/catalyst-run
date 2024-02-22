@@ -31,7 +31,7 @@
     "@well-known-components/logger": "^3.1.2",
     "@well-known-components/metrics": "^2.0.1",
     "@well-known-components/pg-component": "^1.0.0-20220606141021.commit-abcbff6",
-    "dcl-catalyst-client": "^21.5.0",
+    "dcl-catalyst-client": "^21.5.5",
     "eth-crypto": "^2.6.0",
     "sql-template-strings": "^2.2.2"
   }
