@@ -11,6 +11,7 @@ import {
   createFsComponent
 } from '@dcl/catalyst-storage'
 import plainFs from 'fs'
+import path from 'path'
 
 type AppComponents = {
   database: IPgComponent
@@ -18,6 +19,7 @@ type AppComponents = {
 }
 
 const CONTENTS_DIRECTORY = process.env.CONTENTS_DIRECTORY ?? '/app/contents'
+const OUTPUT_DIRECTORY = process.env.OUTPUT_DIRECTORY ?? './'
 
 void Lifecycle.run<AppComponents>({
   async main(program: Lifecycle.EntryPointParameters<AppComponents>): Promise<void> {
@@ -113,8 +115,9 @@ async function analyzeSizes(components: AppComponents) {
     console.log(`Scene ${deployment.entity_id} has pointers: ${deployment.entity_pointers}`)
 
     const sizeInMb = totalSize / 1024 / 1024
+    const outputPath = path.join(OUTPUT_DIRECTORY, 'scenes-sizes.txt')
     plainFs.appendFileSync(
-      'report.log',
+      outputPath,
       `${deployment.entity_id}\n
        Amount of files: ${files.size}\n
        MB: ${sizeInMb}\n
